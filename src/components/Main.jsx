@@ -10,6 +10,15 @@ export default function Main() {
     // 'Tomatoes',
   ]);
   const [recipe, setRecipe] = React.useState("");
+  const recipeSection = React.useRef(null);
+
+  // Scroll to the recipe section when it is updated
+  // and the recipeSection ref is set
+  React.useEffect(() => {
+    if (recipe !== "" && recipeSection.current) {
+      recipeSection.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [recipe]);
 
   function addIngredient(formData) {
     const newIngredient = formData.get('ingredient');
@@ -32,7 +41,7 @@ export default function Main() {
         />
         <button type="submit">Add Ingredient</button>
       </form>
-      {ingredients.length > 0 && <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />}
+      {ingredients.length > 0 && <IngredientsList ref={recipeSection} ingredients={ingredients} getRecipe={getRecipe} />}
       {recipe && <ClaudeRecipe recipe={recipe}/>}
     </main>
   );
